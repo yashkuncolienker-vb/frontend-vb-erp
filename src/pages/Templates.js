@@ -1,7 +1,7 @@
 import TemplateList from '../components/templates/TemplateList';
 
-const AllTemplates = () => {
+const Templates = () => {
   return <TemplateList />;
 };
 
-export default AllTemplates;
+export default Templates;

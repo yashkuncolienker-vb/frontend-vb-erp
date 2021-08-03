@@ -1,6 +1,6 @@
 import { Route, Switch, Redirect } from 'react-router-dom';
 
-import AllTemplates from './pages/AllTemplates';
+import Templates from './pages/Templates';
 
 import Layout from './components/layout/Layout'
 
@@ -12,7 +12,7 @@ function App() {
           <Redirect to='/quotes' />
         </Route>
         <Route path='/quotes' exact>
-          <AllTemplates />
+          <Templates />
         </Route>
       </Switch>
     </Layout>
