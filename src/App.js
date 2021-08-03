@@ -1,10 +1,21 @@
-import './App.css';
+import { Route, Switch, Redirect } from 'react-router-dom';
+
+import AllTemplates from './pages/AllTemplates';
+
+import Layout from './components/layout/Layout'
 
 function App() {
   return (
-    <div className="App">
-      <h1>Valuebound</h1>
-    </div>
+    <Layout>
+      <Switch>
+        <Route path='/' exact>
+          <Redirect to='/quotes' />
+        </Route>
+        <Route path='/quotes' exact>
+          <AllTemplates />
+        </Route>
+      </Switch>
+    </Layout>
   );
 }
 
