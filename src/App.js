@@ -1,19 +1,20 @@
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
-import Templates from './pages/Templates';
-
-import Layout from './components/layout/Layout'
+import routes from './routes/index';
+import Layout from './components/layout/Layout';
 
 function App() {
   return (
     <Layout>
       <Switch>
-        <Route path='/' exact>
-          <Redirect to='/templates' />
-        </Route>
-        <Route path='/templates' exact>
-          <Templates />
-        </Route>
+        {routes.map((route, index) => (
+          <Route
+            key={index}
+            path={route.path}
+            exact
+            render={(props) => <route.component {...props} />}
+          ></Route>
+        ))}
       </Switch>
     </Layout>
   );
