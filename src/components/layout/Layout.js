@@ -1,7 +1,7 @@
-import { Fragment } from 'react';
+import { Fragment } from "react";
 
-import classes from './Layout.module.css';
-import Header from './Header';
+import classes from "./Layout.module.css";
+import Header from "./Header";
 
 const Layout = (props) => {
   return (
