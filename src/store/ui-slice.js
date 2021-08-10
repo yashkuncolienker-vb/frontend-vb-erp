@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   contentIsVisible: false,
   notification: null,
+  loading: false,
 };
 
 const uiSlice = createSlice({
@@ -18,6 +19,9 @@ const uiSlice = createSlice({
         title: action.payload.title,
         message: action.payload.message,
       };
+    },
+    toggleLoader(state, action) {
+      state.loading = !state.loading;
     },
   },
 });
