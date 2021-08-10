@@ -10,7 +10,6 @@ const token =
 if (token) {
   headers.Authorization = `Bearer ${token}`;
 }
-console.log("axios");
 
 const axiosInstance = axios.create({
   baseURL: baseURL,

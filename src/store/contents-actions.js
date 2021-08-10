@@ -5,7 +5,6 @@ import axios from "../helpers/axiosInstance";
 export const getContentsData = () => {
   return async (dispatch) => {
     const fetchData = async () => {
-      console.log("fetch");
       const response = axios.get("/getContentsData");
 
       if (!response.ok) {
@@ -45,17 +44,5 @@ export const sendContentData = (content) => {
         message: "Sending cart data!",
       })
     );
-
-    const postData = async () => {
-      const response = axios.post("/postContentData", content);
-
-      if (!response.ok) {
-        throw new Error("Could not fetch cart data!");
-      }
-
-      const data = await response.json();
-
-      return data;
-    };
   };
 };
