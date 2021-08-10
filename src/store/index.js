@@ -1,10 +1,11 @@
-import { applyMiddleware, createStore } from "redux";
-import thunk from "redux-thunk";
+import { configureStore } from "@reduxjs/toolkit";
 
-const rootReducer = (state = { isAuthenticated: false }, action) => {
-  return state;
-};
+import contentsSlice from "./contents-slice";
+import uiSlice from "./ui-slice";
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
-
-export default store;
+export default configureStore({
+  reducer: {
+    contents: contentsSlice.reducer,
+    ui: uiSlice.reducer,
+  },
+});
