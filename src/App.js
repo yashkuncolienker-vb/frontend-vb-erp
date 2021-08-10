@@ -1,21 +1,39 @@
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from "react-router-dom";
 
-import Templates from './pages/Templates';
-
-import Layout from './components/layout/Layout'
+import routes from "./routes/index";
+import Layout from "./components/layout/Layout";
+import Notification from "./components/UI/Notification";
+import PageLoader from "./components/UI/PageLoader";
+import { useSelector } from "react-redux";
+import { Fragment } from "react";
 
 function App() {
+  const notification = useSelector((state) => state.ui.notification);
+  const loader = useSelector((state) => state.ui.loading);
+
   return (
-    <Layout>
-      <Switch>
-        <Route path='/' exact>
-          <Redirect to='/templates' />
-        </Route>
-        <Route path='/templates' exact>
-          <Templates />
-        </Route>
-      </Switch>
-    </Layout>
+    <Fragment>
+      {notification && (
+        <Notification
+          status={notification.status}
+          title={notification.title}
+          message={notification.message}
+        />
+      )}
+      {loader && <PageLoader />}
+      <Layout>
+        <Switch>
+          {routes.map((route, index) => (
+            <Route
+              key={index}
+              path={route.path}
+              exact
+              render={(props) => <route.component {...props} />}
+            ></Route>
+          ))}
+        </Switch>
+      </Layout>
+    </Fragment>
   );
 }
 
