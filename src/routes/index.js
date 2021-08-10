@@ -1,4 +1,5 @@
 import Templates from "../pages/Templates";
+import NotFound from "../pages/NotFound";
 
 const routes = [
   {
@@ -14,6 +15,11 @@ const routes = [
   {
     path: "/login",
     title: "Login",
+  },
+  {
+    path: "*",
+    component: NotFound,
+    title: "Not Found",
   },
 ];
 
