@@ -26,7 +26,7 @@ const Notification = (props) => {
     });
   }
 
-  return <ToastContainer autoClose={2000} limit={1} />;
+  return <ToastContainer autoClose={3000} limit={3} />;
 };
 
 export default Notification;
