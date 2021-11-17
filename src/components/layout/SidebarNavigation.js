@@ -10,6 +10,7 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import DonutLargeIcon from "@mui/icons-material/DonutLarge";
 import GridViewIcon from "@mui/icons-material/GridView";
+import { styled } from "@mui/material/styles";
 const customStyles = {
   position: "fixed",
   top: "70px",
@@ -17,6 +18,15 @@ const customStyles = {
   height: "100vh",
   width: "250px",
 };
+
+const CustomListItemButton = styled(ListItemButton)(({ theme }) => ({
+  "&.Mui-selected": {
+    backgroundColor: "#ff4500",
+  },
+  "&.Mui-selected:hover": {
+    backgroundColor: "#ff4500",
+  },
+}));
 
 const SidebarNavigation = () => {
   const [openTasks, setOpenTasks] = useState(false);
@@ -81,66 +91,61 @@ const SidebarNavigation = () => {
 
   return (
     <Box sx={customStyles}>
-      <List component="nav">
-        <ListItemButton
-          selected={selectedIndex === 0}
-          onClick={(event) => handleListItemClick(0)}
-        >
-          <ListItemText primary="Inbox" />
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 1}
-          onClick={(event) => handleListItemClick(1)}
-        >
-          <ListItemText primary="Inbox" />
-        </ListItemButton>
-      </List>
-
       <List
         sx={{
           width: "100%",
           height: "100%",
           maxWidth: 250,
-          bgcolor: "primary",
+          bgcolor: "black",
           color: "white",
+          "&": {
+            overflow: "scroll",
+          },
+          "&::-webkit-scrollbar": {
+            width: "5px",
+          },
         }}
         component="nav"
       >
         {sideMenu.map((menuItem, i) => {
           if (!menuItem.dropDown) {
             return (
-              <ListItemButton
+              <CustomListItemButton
                 selected={selectedIndex === i}
                 onClick={() => handleListItemClick(i)}
               >
                 <ListItemIcon>
-                  <DonutLargeIcon />
+                  <DonutLargeIcon color="primary" />
                 </ListItemIcon>
                 <ListItemText primary={menuItem.name} />
-              </ListItemButton>
+              </CustomListItemButton>
             );
           } else {
             return (
               <>
-                <ListItemButton
-                  onClick={menuItem.handle}
+                <CustomListItemButton
+                  onClick={() => {
+                    menuItem.handle();
+                    handleListItemClick(i);
+                  }}
+                  id={i}
                   selected={selectedIndex === i}
                 >
                   <ListItemIcon>
-                    <DonutLargeIcon />
+                    <DonutLargeIcon color="primary" />
                   </ListItemIcon>
                   <ListItemText primary={menuItem.name} />
                   {menuItem.open ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
+                </CustomListItemButton>
                 <Collapse in={menuItem.open} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
-                    {menuItem.dropDown.map((item, j) => (
-                      <ListItemButton key={j} sx={{ pl: 4 }}>
+                    {menuItem.dropDown.map((item) => (
+                      <CustomListItemButton sx={{ pl: 4 }}>
                         <ListItemIcon>
-                          <GridViewIcon />
+                          <GridViewIcon color="primary" />
                         </ListItemIcon>
                         <ListItemText primary={item} />
-                      </ListItemButton>
+                      </CustomListItemButton>
                     ))}
                   </List>
                 </Collapse>
