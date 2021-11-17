@@ -1,19 +1,15 @@
 import "./SidebarNavigation.module.css";
 import Box from "@mui/material/Box";
 import { useState } from "react";
-import ListSubheader from "@mui/material/ListSubheader";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import SendIcon from "@mui/icons-material/Send";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import StarBorder from "@mui/icons-material/StarBorder";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import DonutLargeIcon from "@mui/icons-material/DonutLarge";
+import GridViewIcon from "@mui/icons-material/GridView";
 const customStyles = {
   position: "fixed",
   top: "70px",
@@ -22,72 +18,137 @@ const customStyles = {
   width: "250px",
 };
 
-const theme = createTheme({
-  palette: {
-    mode: "dark",
-    primary: {
-      main: "#000000",
-    },
-  },
-});
-
 const SidebarNavigation = () => {
-  const [open, setOpen] = useState(true);
+  const [openTasks, setOpenTasks] = useState(false);
+  const [openPMO, setOpenPMO] = useState(false);
+  const [openCMS, setOpenCMS] = useState(false);
+  const [openRR, setOpenRR] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(1);
 
-  const handleClick = () => {
-    setOpen(!open);
+  const handleListItemClick = (index) => {
+    setSelectedIndex(index);
   };
+  const handleClickTasks = (event) => {
+    setOpenTasks(!openTasks);
+  };
+  const handleClickPMO = (event) => {
+    setOpenPMO(!openPMO);
+  };
+  const handleClickCMS = (event) => {
+    setOpenCMS(!openCMS);
+  };
+  const handleClickRR = (event) => {
+    setOpenRR(!openRR);
+  };
+  const sideMenu = [
+    {
+      name: "My Profile",
+    },
+    {
+      name: "Tasks",
+      dropDown: ["Create Profile", "Reviews"],
+      open: openTasks,
+      handle: handleClickTasks,
+    },
+    {
+      name: "Network",
+    },
+    {
+      name: "Contract Mgmt",
+    },
+    {
+      name: "PMO",
+      dropDown: ["Projects", "Create Project", "Allocations"],
+      open: openPMO,
+      handle: handleClickPMO,
+    },
+    {
+      name: "CIMS",
+    },
+    {
+      name: "CMS",
+      dropDown: ["PO/SOW", "Invoicing"],
+      open: openCMS,
+      handle: handleClickCMS,
+    },
+    {
+      name: "R&R",
+      dropDown: ["Catalog", "Reward"],
+      open: openRR,
+      handle: handleClickRR,
+    },
+  ];
 
   return (
     <Box sx={customStyles}>
-      <ThemeProvider theme={theme}>
-        <List
-          sx={{
-            width: "100%",
-            height: "100%",
-            maxWidth: 360,
-            bgcolor: "primary.main",
-            color: "white",
-          }}
-          component="nav"
-          aria-labelledby="nested-list-subheader"
-          subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
-              Nested List Items
-            </ListSubheader>
-          }
+      <List component="nav">
+        <ListItemButton
+          selected={selectedIndex === 0}
+          onClick={(event) => handleListItemClick(0)}
         >
-          <ListItemButton>
-            <ListItemIcon>
-              <SendIcon />
-            </ListItemIcon>
-            <ListItemText primary="Sent mail" />
-          </ListItemButton>
-          <ListItemButton>
-            <ListItemIcon>
-              <DraftsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Drafts" />
-          </ListItemButton>
-          <ListItemButton onClick={handleClick}>
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary="Inbox" />
-            {open ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }}>
+          <ListItemText primary="Inbox" />
+        </ListItemButton>
+        <ListItemButton
+          selected={selectedIndex === 1}
+          onClick={(event) => handleListItemClick(1)}
+        >
+          <ListItemText primary="Inbox" />
+        </ListItemButton>
+      </List>
+
+      <List
+        sx={{
+          width: "100%",
+          height: "100%",
+          maxWidth: 250,
+          bgcolor: "primary",
+          color: "white",
+        }}
+        component="nav"
+      >
+        {sideMenu.map((menuItem, i) => {
+          if (!menuItem.dropDown) {
+            return (
+              <ListItemButton
+                selected={selectedIndex === i}
+                onClick={() => handleListItemClick(i)}
+              >
                 <ListItemIcon>
-                  <StarBorder />
+                  <DonutLargeIcon />
                 </ListItemIcon>
-                <ListItemText primary="Starred" />
+                <ListItemText primary={menuItem.name} />
               </ListItemButton>
-            </List>
-          </Collapse>
-        </List>
-      </ThemeProvider>
+            );
+          } else {
+            return (
+              <>
+                <ListItemButton
+                  onClick={menuItem.handle}
+                  selected={selectedIndex === i}
+                >
+                  <ListItemIcon>
+                    <DonutLargeIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={menuItem.name} />
+                  {menuItem.open ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={menuItem.open} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {menuItem.dropDown.map((item, j) => (
+                      <ListItemButton key={j} sx={{ pl: 4 }}>
+                        <ListItemIcon>
+                          <GridViewIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={item} />
+                      </ListItemButton>
+                    ))}
+                  </List>
+                </Collapse>
+              </>
+            );
+          }
+        })}
+      </List>
     </Box>
   );
 };
