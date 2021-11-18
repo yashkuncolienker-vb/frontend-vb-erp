@@ -2,6 +2,7 @@ import "./SidebarNavigation.module.css";
 import Box from "@mui/material/Box";
 import { useState } from "react";
 import List from "@mui/material/List";
+import { Paper } from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -17,6 +18,26 @@ const customStyles = {
   left: "0",
   height: "100vh",
   width: "250px",
+  backgroundColor: "black",
+};
+
+const listStyles = {
+  width: "100%",
+  height: "100%",
+  maxWidth: "250px",
+  bgcolor: "black",
+  color: "white",
+};
+
+const paperStyles = {
+  padding: 0,
+  margin: 0,
+  backgroundColor: "black",
+  maxHeight: "90%",
+  overflow: "auto",
+  "&::-webkit-scrollbar": {
+    width: "5px",
+  },
 };
 
 const CustomListItemButton = styled(ListItemButton)(({ theme }) => ({
@@ -91,69 +112,56 @@ const SidebarNavigation = () => {
 
   return (
     <Box sx={customStyles}>
-      <List
-        sx={{
-          width: "100%",
-          height: "100%",
-          maxWidth: 250,
-          bgcolor: "black",
-          color: "white",
-          "&": {
-            overflow: "scroll",
-          },
-          "&::-webkit-scrollbar": {
-            width: "5px",
-          },
-        }}
-        component="nav"
-      >
-        {sideMenu.map((menuItem, i) => {
-          if (!menuItem.dropDown) {
-            return (
-              <CustomListItemButton
-                selected={selectedIndex === i}
-                onClick={() => handleListItemClick(i)}
-              >
-                <ListItemIcon>
-                  <DonutLargeIcon color="primary" />
-                </ListItemIcon>
-                <ListItemText primary={menuItem.name} />
-              </CustomListItemButton>
-            );
-          } else {
-            return (
-              <>
+      <Paper sx={paperStyles}>
+        <List sx={listStyles} component="nav">
+          {sideMenu.map((menuItem, i) => {
+            if (!menuItem.dropDown) {
+              return (
                 <CustomListItemButton
-                  onClick={() => {
-                    menuItem.handle();
-                    handleListItemClick(i);
-                  }}
-                  id={i}
                   selected={selectedIndex === i}
+                  onClick={() => handleListItemClick(i)}
                 >
                   <ListItemIcon>
                     <DonutLargeIcon color="primary" />
                   </ListItemIcon>
                   <ListItemText primary={menuItem.name} />
-                  {menuItem.open ? <ExpandLess /> : <ExpandMore />}
                 </CustomListItemButton>
-                <Collapse in={menuItem.open} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    {menuItem.dropDown.map((item) => (
-                      <CustomListItemButton sx={{ pl: 4 }}>
-                        <ListItemIcon>
-                          <GridViewIcon color="primary" />
-                        </ListItemIcon>
-                        <ListItemText primary={item} />
-                      </CustomListItemButton>
-                    ))}
-                  </List>
-                </Collapse>
-              </>
-            );
-          }
-        })}
-      </List>
+              );
+            } else {
+              return (
+                <>
+                  <CustomListItemButton
+                    onClick={() => {
+                      menuItem.handle();
+                      handleListItemClick(i);
+                    }}
+                    id={i}
+                    selected={selectedIndex === i}
+                  >
+                    <ListItemIcon>
+                      <DonutLargeIcon color="primary" />
+                    </ListItemIcon>
+                    <ListItemText primary={menuItem.name} />
+                    {menuItem.open ? <ExpandLess /> : <ExpandMore />}
+                  </CustomListItemButton>
+                  <Collapse in={menuItem.open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                      {menuItem.dropDown.map((item) => (
+                        <CustomListItemButton sx={{ pl: 4 }}>
+                          <ListItemIcon>
+                            <GridViewIcon color="primary" />
+                          </ListItemIcon>
+                          <ListItemText primary={item} />
+                        </CustomListItemButton>
+                      ))}
+                    </List>
+                  </Collapse>
+                </>
+              );
+            }
+          })}
+        </List>
+      </Paper>
     </Box>
   );
 };
