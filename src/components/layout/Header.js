@@ -1,4 +1,3 @@
-import { Box } from "@mui/system";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import vbLogo from "../../assets/images/vb_logo.svg";
 import IconButton from "@mui/material/IconButton";
@@ -12,13 +11,21 @@ import Divider from "@mui/material/Divider";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import { createTheme, ThemeProvider } from "@mui/material";
+
+const theme = createTheme({
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          boxShadow: "inset  0 -10px 3px -10px grey",
+        },
+      },
+    },
+  },
+});
 
 const customStyles = {
-  root: {
-    height: "70px",
-    position: "fixed",
-    width: "100%",
-  },
   image: {
     width: "180px",
   },
@@ -26,10 +33,12 @@ const customStyles = {
     display: "flex",
     height: "70px",
     justifyContent: "space-between",
-    margin: "0 40px",
+    padding: "0 40px",
   },
   appbar: {
     backgroundColor: "white",
+    position: "fixed",
+    width: "100%",
   },
 };
 
@@ -43,8 +52,8 @@ const Header = () => {
     setAnchorEl(null);
   };
   return (
-    <Box sx={customStyles.root}>
-      <AppBar sx={customStyles.appbar} position="static" elevation={4}>
+    <ThemeProvider theme={theme}>
+      <AppBar sx={customStyles.appbar} position="static">
         <Toolbar sx={customStyles.toolbar}>
           <img style={customStyles.image} src={vbLogo} alt="vb-logo" />
           <IconButton size="large" edge="end" onClick={handleClick}>
@@ -91,7 +100,7 @@ const Header = () => {
           </Menu>
         </Toolbar>
       </AppBar>
-    </Box>
+    </ThemeProvider>
   );
 };
 export default Header;

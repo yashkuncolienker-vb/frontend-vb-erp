@@ -12,31 +12,39 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import DonutLargeIcon from "@mui/icons-material/DonutLarge";
 import GridViewIcon from "@mui/icons-material/GridView";
 import { styled } from "@mui/material/styles";
-const customStyles = {
+import { Avatar } from "@mui/material";
+import { Grid } from "@mui/material";
+
+const boxStyles = {
   position: "fixed",
   top: "70px",
   left: "0",
   height: "100vh",
-  width: "250px",
-  backgroundColor: "black",
+  backgroundColor: "white",
+  boxShadow:
+    "rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px",
 };
 
 const listStyles = {
-  width: "100%",
+  width: "250px",
   height: "100%",
   maxWidth: "250px",
-  bgcolor: "black",
-  color: "white",
+  bgcolor: "white",
+  color: "black",
 };
 
 const paperStyles = {
   padding: 0,
   margin: 0,
-  backgroundColor: "black",
+  width: "250px",
   maxHeight: "90%",
-  overflow: "auto",
+  overflowY: "scroll",
+  overflowX: "hidden",
   "&::-webkit-scrollbar": {
     width: "5px",
+  },
+  "&:hover": {
+    overflowY: "scroll",
   },
 };
 
@@ -54,7 +62,7 @@ const SidebarNavigation = () => {
   const [openPMO, setOpenPMO] = useState(false);
   const [openCMS, setOpenCMS] = useState(false);
   const [openRR, setOpenRR] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleListItemClick = (index) => {
     setSelectedIndex(index);
@@ -111,9 +119,12 @@ const SidebarNavigation = () => {
   ];
 
   return (
-    <Box sx={customStyles}>
-      <Paper sx={paperStyles}>
+    <Box sx={boxStyles}>
+      <Paper sx={paperStyles} elevation={0}>
         <List sx={listStyles} component="nav">
+          <Grid paddingY="20px" container justifyContent="center">
+            <Avatar style={{ width: "80px", height: "80px" }} />
+          </Grid>
           {sideMenu.map((menuItem, i) => {
             if (!menuItem.dropDown) {
               return (
@@ -122,7 +133,7 @@ const SidebarNavigation = () => {
                   onClick={() => handleListItemClick(i)}
                 >
                   <ListItemIcon>
-                    <DonutLargeIcon color="primary" />
+                    <DonutLargeIcon style={{ color: "black" }} />
                   </ListItemIcon>
                   <ListItemText primary={menuItem.name} />
                 </CustomListItemButton>
@@ -139,7 +150,7 @@ const SidebarNavigation = () => {
                     selected={selectedIndex === i}
                   >
                     <ListItemIcon>
-                      <DonutLargeIcon color="primary" />
+                      <DonutLargeIcon style={{ color: "black" }} />
                     </ListItemIcon>
                     <ListItemText primary={menuItem.name} />
                     {menuItem.open ? <ExpandLess /> : <ExpandMore />}
@@ -149,7 +160,7 @@ const SidebarNavigation = () => {
                       {menuItem.dropDown.map((item) => (
                         <CustomListItemButton sx={{ pl: 4 }}>
                           <ListItemIcon>
-                            <GridViewIcon color="primary" />
+                            <GridViewIcon style={{ color: "black" }} />
                           </ListItemIcon>
                           <ListItemText primary={item} />
                         </CustomListItemButton>
@@ -165,5 +176,4 @@ const SidebarNavigation = () => {
     </Box>
   );
 };
-
 export default SidebarNavigation;
