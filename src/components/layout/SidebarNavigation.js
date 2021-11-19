@@ -50,10 +50,10 @@ const paperStyles = {
 
 const CustomListItemButton = styled(ListItemButton)(({ theme }) => ({
   "&.Mui-selected": {
-    backgroundColor: "#ff4500",
+    backgroundColor: "#efefef",
   },
   "&.Mui-selected:hover": {
-    backgroundColor: "#ff4500",
+    backgroundColor: "#efefef",
   },
 }));
 

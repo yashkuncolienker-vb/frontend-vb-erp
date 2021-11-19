@@ -1,3 +1,11 @@
-# In house CMS
+# VB ERP
 
-The aim of this project is to create a headless CMS which can help any startup / mature team add dynamic content to their website/app. The CMS will provide the create - read-update-delete functionality for the content authors.
+The aim of this project is to create a internal ERP for Valuebound.
+
+Modules Included:
+
+- PMO
+- CIMS
+- CMS
+- R&R
+- EI
