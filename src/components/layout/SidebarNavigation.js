@@ -117,7 +117,6 @@ const SidebarNavigation = () => {
       handle: handleClickRR,
     },
   ];
-
   return (
     <Box sx={boxStyles}>
       <Paper sx={paperStyles} elevation={0}>
@@ -146,7 +145,6 @@ const SidebarNavigation = () => {
                       menuItem.handle();
                       handleListItemClick(i);
                     }}
-                    id={i}
                     selected={selectedIndex === i}
                   >
                     <ListItemIcon>
@@ -155,10 +153,15 @@ const SidebarNavigation = () => {
                     <ListItemText primary={menuItem.name} />
                     {menuItem.open ? <ExpandLess /> : <ExpandMore />}
                   </CustomListItemButton>
-                  <Collapse in={menuItem.open} timeout="auto" unmountOnExit>
+                  <Collapse
+                    in={menuItem.open}
+                    key={i}
+                    timeout="auto"
+                    unmountOnExit
+                  >
                     <List component="div" disablePadding>
-                      {menuItem.dropDown.map((item) => (
-                        <CustomListItemButton sx={{ pl: 4 }}>
+                      {menuItem.dropDown.map((item, j) => (
+                        <CustomListItemButton key={j} sx={{ pl: 4 }}>
                           <ListItemIcon>
                             <GridViewIcon style={{ color: "black" }} />
                           </ListItemIcon>
