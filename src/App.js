@@ -13,7 +13,7 @@ function App() {
 
   return (
     <Fragment>
-      {notification && (
+      {notification && !loader && (
         <Notification
           status={notification.status}
           title={notification.title}

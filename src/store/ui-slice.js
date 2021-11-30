@@ -14,11 +14,15 @@ const uiSlice = createSlice({
       state.contentIsVisible = !state.contentIsVisible;
     },
     showNotification(state, action) {
-      state.notification = {
-        status: action.payload.status,
-        title: action.payload.title,
-        message: action.payload.message,
-      };
+      if (action.payload) {
+        state.notification = {
+          status: action.payload.status,
+          title: action.payload.title,
+          message: action.payload.message,
+        };
+      } else {
+        state.notification = null;
+      }
     },
     toggleLoader(state, action) {
       state.loading = !state.loading;

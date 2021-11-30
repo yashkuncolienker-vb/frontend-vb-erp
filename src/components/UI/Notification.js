@@ -1,22 +1,32 @@
-import classes from "./Notification.module.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { uiActions } from "../../store/ui-slice";
 
 const Notification = (props) => {
-  let specialClasses = "";
+  const dispatch = useDispatch();
 
-  if (props.status === "error") {
-    specialClasses = classes.show;
-  }
+  const afterToast = () => {
+    toast.clearWaitingQueue();
+    dispatch(uiActions.showNotification(null));
+  };
+
   if (props.status === "success") {
-    specialClasses = classes.show;
+    toast.success("Success", {
+      position: toast.POSITION.TOP_CENTER,
+      onClose: afterToast,
+      theme: "dark",
+    });
+  }
+  if (props.status === "error") {
+    toast.error("OOPS Looks like something Happened!", {
+      position: toast.POSITION.TOP_CENTER,
+      onClose: afterToast,
+      theme: "dark",
+    });
   }
 
-  const cssClasses = `${classes.snackbar} ${specialClasses}`;
-
-  return (
-    <div id="snackbar" className={cssClasses}>
-      {props.message}
-    </div>
-  );
+  return <ToastContainer autoClose={3000} limit={3} />;
 };
 
 export default Notification;
