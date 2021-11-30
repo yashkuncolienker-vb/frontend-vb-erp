@@ -12,6 +12,9 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { createTheme, ThemeProvider } from "@mui/material";
+import axios from "../../helpers/axiosInstance";
+import { useDispatch } from "react-redux";
+import { uiActions } from "../../store/ui-slice";
 
 const theme = createTheme({
   components: {
@@ -45,11 +48,32 @@ const customStyles = {
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const dispatch = useDispatch();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleClickLogout = async () => {
+    setAnchorEl(null);
+    try {
+      await axios.post("/users/logout", {}, { withCredentials: true });
+      dispatch(
+        uiActions.showNotification({
+          status: "success",
+          title: "Success",
+          message: "Logged Out Successfully",
+        })
+      );
+    } catch (e) {
+      dispatch(
+        uiActions.showNotification({
+          status: "error",
+          title: "Error",
+        })
+      );
+    }
   };
   return (
     <ThemeProvider theme={theme}>
@@ -91,7 +115,7 @@ const Header = () => {
               </ListItemIcon>
               Settings
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={handleClickLogout}>
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>

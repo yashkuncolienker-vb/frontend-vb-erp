@@ -16,6 +16,9 @@ const sx = {
     minWidth: "20px",
     padding: "5px",
   },
+  container: {
+    width: "200px",
+  },
 };
 const validationSchema = yup.object({
   email: yup
@@ -67,7 +70,7 @@ const LoginForm = () => {
   });
 
   return (
-    <>
+    <div>
       <form onSubmit={formik.handleSubmit}>
         <Grid
           container
@@ -117,7 +120,7 @@ const LoginForm = () => {
           </Grid>
         </Grid>
       </form>
-    </>
+    </div>
   );
 };
 

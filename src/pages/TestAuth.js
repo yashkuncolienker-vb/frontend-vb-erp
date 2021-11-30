@@ -12,12 +12,7 @@ const TestAuth = () => {
   };
   const handleClickLogout = async () => {
     try {
-      const temp = await axios.post(
-        "/users/logout",
-        {},
-        { withCredentials: true }
-      );
-      // console.log(temp);
+      await axios.post("/users/logout", {}, { withCredentials: true });
       alert("Loggedout");
     } catch (e) {
       alert("Error");
