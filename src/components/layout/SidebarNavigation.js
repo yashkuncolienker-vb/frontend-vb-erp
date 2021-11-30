@@ -153,15 +153,10 @@ const SidebarNavigation = () => {
                     <ListItemText primary={menuItem.name} />
                     {menuItem.open ? <ExpandLess /> : <ExpandMore />}
                   </CustomListItemButton>
-                  <Collapse
-                    in={menuItem.open}
-                    key={i}
-                    timeout="auto"
-                    unmountOnExit
-                  >
+                  <Collapse in={menuItem.open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                       {menuItem.dropDown.map((item, j) => (
-                        <CustomListItemButton key={j} sx={{ pl: 4 }}>
+                        <CustomListItemButton sx={{ pl: 4 }}>
                           <ListItemIcon>
                             <GridViewIcon style={{ color: "black" }} />
                           </ListItemIcon>
