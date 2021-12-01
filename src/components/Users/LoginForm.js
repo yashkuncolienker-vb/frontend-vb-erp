@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Grid, Typography } from "@mui/material";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { uiActions } from "../../store/ui-slice";
 
@@ -33,7 +33,7 @@ const validationSchema = yup.object({
 });
 
 const LoginForm = () => {
-  let history = useHistory();
+  let history = useNavigate();
   const dispatch = useDispatch();
 
   const formik = useFormik({

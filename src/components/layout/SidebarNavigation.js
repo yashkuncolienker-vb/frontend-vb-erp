@@ -128,6 +128,7 @@ const SidebarNavigation = () => {
             if (!menuItem.dropDown) {
               return (
                 <CustomListItemButton
+                  key={i}
                   selected={selectedIndex === i}
                   onClick={() => handleListItemClick(i)}
                 >
@@ -139,7 +140,7 @@ const SidebarNavigation = () => {
               );
             } else {
               return (
-                <>
+                <div key={i}>
                   <CustomListItemButton
                     onClick={() => {
                       menuItem.handle();
@@ -156,7 +157,7 @@ const SidebarNavigation = () => {
                   <Collapse in={menuItem.open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                       {menuItem.dropDown.map((item, j) => (
-                        <CustomListItemButton sx={{ pl: 4 }}>
+                        <CustomListItemButton key={j} sx={{ pl: 4 }}>
                           <ListItemIcon>
                             <GridViewIcon style={{ color: "black" }} />
                           </ListItemIcon>
@@ -165,7 +166,7 @@ const SidebarNavigation = () => {
                       ))}
                     </List>
                   </Collapse>
-                </>
+                </div>
               );
             }
           })}
