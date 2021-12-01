@@ -7,19 +7,13 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { uiActions } from "../../store/ui-slice";
+import Avatar from "@mui/material/Avatar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Container from "@mui/material/Container";
+import { Paper } from "@mui/material";
 
-const sx = {
-  fields: {
-    width: "600px",
-  },
-  button: {
-    minWidth: "20px",
-    padding: "5px",
-  },
-  container: {
-    width: "200px",
-  },
-};
 const validationSchema = yup.object({
   email: yup
     .string("Email")
@@ -33,7 +27,7 @@ const validationSchema = yup.object({
 });
 
 const LoginForm = () => {
-  let history = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -56,7 +50,7 @@ const LoginForm = () => {
             message: "Successfully LoggedIn User",
           })
         );
-        history.push("/");
+        navigate.push("/");
       } catch (e) {
         dispatch(
           uiActions.showNotification({
@@ -70,57 +64,73 @@ const LoginForm = () => {
   });
 
   return (
-    <div>
-      <form onSubmit={formik.handleSubmit}>
-        <Grid
-          container
-          spacing={2}
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Paper elevation={2}>
+        <Box
+          sx={{
+            marginTop: 10,
+            padding: 5,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
         >
-          <Grid item xs={12}>
-            <Typography variant="h4">Login</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              sx={sx.fields}
-              id="email"
-              name="email"
-              label="Email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              sx={sx.fields}
-              id="password"
-              name="password"
-              label="Password"
-              type="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-            />
-          </Grid>
-          <Grid item xs={12}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Login
+          </Typography>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={formik.handleSubmit}
+            sx={{ mt: 3 }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  name="email"
+                  label="Email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  error={formik.touched.email && Boolean(formik.errors.email)}
+                  helperText={formik.touched.email && formik.errors.email}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="password"
+                  name="password"
+                  label="Password"
+                  type="password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.password && Boolean(formik.errors.password)
+                  }
+                  helperText={formik.touched.password && formik.errors.password}
+                />
+              </Grid>
+            </Grid>
             <Button
-              sx={sx.button}
-              color="primary"
-              variant="contained"
-              fullWidth
               type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
             >
               Login
             </Button>
-          </Grid>
-        </Grid>
-      </form>
-    </div>
+          </Box>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 
