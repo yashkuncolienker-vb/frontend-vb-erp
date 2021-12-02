@@ -23,6 +23,7 @@ import axios from "../../helpers/axiosInstance";
 import { useDispatch } from "react-redux";
 import uiActions from "../../store/ui-slice";
 import { Typography } from "@mui/material";
+import { userSlice } from "../../store/user-slice";
 const customStyling = {
   boxStyles: {
     position: "fixed",
@@ -86,8 +87,11 @@ const CustomListItemButton = styled(ListItemButton)(({ theme }) => ({
 }));
 
 const SidebarNavigation = () => {
+  //
   const dispatch = useDispatch();
   const loginState = useSelector((state) => state.user.loginBool);
+  const [usrData, setUsrData] = useState(null);
+  //
   const [openTasks, setOpenTasks] = useState(false);
   const [openPMO, setOpenPMO] = useState(false);
   const [openCMS, setOpenCMS] = useState(false);
@@ -97,7 +101,7 @@ const SidebarNavigation = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
-  const [usrData, setUsrData] = useState(null);
+
   useEffect(() => {
     if (!matches) {
       setBool(false);
@@ -107,6 +111,7 @@ const SidebarNavigation = () => {
       setOpenHamburger(false);
     }
   }, [matches]);
+
   useEffect(() => {
     (async () => {
       if (loginState) {
@@ -128,7 +133,8 @@ const SidebarNavigation = () => {
         setUsrData(null);
       }
     })();
-  }, [loginState, dispatch]);
+  }, [loginState]);
+  //
   const handleHamburger = (index) => {
     setOpenHamburger(!openHamburger);
   };
@@ -242,6 +248,9 @@ const SidebarNavigation = () => {
                 <Grid container direction="column" alignItems="center">
                   <Grid item xs={12}>
                     <Typography>
+                      {console.log(loginState)}
+                      {console.log(usrData)}
+
                       {`Hello! ${usrData.data.data.first_name} ${usrData.data.data.last_name}`}
                     </Typography>
                   </Grid>
