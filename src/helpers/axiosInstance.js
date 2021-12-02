@@ -29,7 +29,7 @@ axiosInstance.interceptors.response.use(
       });
     }
 
-    if (error.response.status === 403) {
+    if (error.response.status === 401) {
       window.location = "/login";
     } else {
       return new Promise((resolve, reject) => {

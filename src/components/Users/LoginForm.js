@@ -8,11 +8,11 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { uiActions } from "../../store/ui-slice";
 import Avatar from "@mui/material/Avatar";
-import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Container from "@mui/material/Container";
 import { Paper } from "@mui/material";
+import { userActions } from "../../store/user-slice";
 
 const validationSchema = yup.object({
   email: yup
@@ -42,15 +42,20 @@ const LoginForm = () => {
         credentials: "same-origin",
       };
       try {
-        await axios.post("http://localhost:4000/users/login", values, config);
+        await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}users/login`,
+          values,
+          config
+        );
+        dispatch(userActions.handleLoginBool({ loginBool: true }));
         dispatch(
           uiActions.showNotification({
             status: "success",
             title: "Success",
-            message: "Successfully LoggedIn User",
+            message: "Successfully Logged In",
           })
         );
-        navigate.push("/");
+        navigate("/");
       } catch (e) {
         dispatch(
           uiActions.showNotification({
@@ -64,13 +69,12 @@ const LoginForm = () => {
   });
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
+    <Container component="main" maxWidth="sm">
       <Paper elevation={2}>
         <Box
           sx={{
             marginTop: 10,
-            padding: 5,
+            padding: "10px 30px 10px 30px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",

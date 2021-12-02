@@ -2,7 +2,7 @@ import Templates from "../pages/Templates";
 import NotFound from "../pages/NotFound";
 import Login from "../pages/Users/Login";
 import TestAuth from "../pages/TestAuth";
-import Signup from "../pages/Users/Signup";
+import AddUser from "../pages/Users/AddUser";
 const routes = [
   {
     path: "/",
@@ -20,9 +20,9 @@ const routes = [
     title: "Login",
   },
   {
-    path: "/users/signup",
-    component: Signup,
-    title: "Signup",
+    path: "/users/adduser",
+    component: AddUser,
+    title: "AddUser",
   },
   {
     path: "/testAuth",

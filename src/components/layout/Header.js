@@ -15,7 +15,9 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import axios from "../../helpers/axiosInstance";
 import { useDispatch } from "react-redux";
 import { uiActions } from "../../store/ui-slice";
-
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router";
+import { userActions } from "../../store/user-slice";
 const theme = createTheme({
   components: {
     MuiAppBar: {
@@ -45,8 +47,12 @@ const customStyles = {
   },
 };
 
+const sleep = (milliseconds) => {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+};
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const dispatch = useDispatch();
   const handleClick = (event) => {
@@ -57,8 +63,10 @@ const Header = () => {
   };
   const handleClickLogout = async () => {
     setAnchorEl(null);
+    await sleep(1000);
     try {
       await axios.post("/users/logout", {}, { withCredentials: true });
+      dispatch(userActions.handleLoginBool({ loginBool: false }));
       dispatch(
         uiActions.showNotification({
           status: "success",
@@ -66,6 +74,19 @@ const Header = () => {
           message: "Logged Out Successfully",
         })
       );
+    } catch (e) {
+      dispatch(
+        uiActions.showNotification({
+          status: "error",
+          title: "Error",
+        })
+      );
+    }
+  };
+  const handleClickLogin = async () => {
+    setAnchorEl(null);
+    try {
+      navigate("/users/login");
     } catch (e) {
       dispatch(
         uiActions.showNotification({
@@ -105,22 +126,36 @@ const Header = () => {
             transformOrigin={{ horizontal: "center", vertical: "top" }}
             anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
           >
-            <MenuItem onClick={handleClose}>
-              <Avatar /> Profile
-            </MenuItem>
-            <Divider />
+            {Cookies.get("Token") && (
+              <div>
+                <MenuItem onClick={handleClose}>
+                  <Avatar /> Profile
+                </MenuItem>
+                <Divider />
+              </div>
+            )}
+
             <MenuItem onClick={handleClose}>
               <ListItemIcon>
                 <Settings fontSize="small" />
               </ListItemIcon>
               Settings
             </MenuItem>
-            <MenuItem onClick={handleClickLogout}>
-              <ListItemIcon>
-                <Logout fontSize="small" />
-              </ListItemIcon>
-              Logout
-            </MenuItem>
+            {Cookies.get("Token") ? (
+              <MenuItem onClick={handleClickLogout}>
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                Logout
+              </MenuItem>
+            ) : (
+              <MenuItem onClick={handleClickLogin}>
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                Login
+              </MenuItem>
+            )}
           </Menu>
         </Toolbar>
       </AppBar>
