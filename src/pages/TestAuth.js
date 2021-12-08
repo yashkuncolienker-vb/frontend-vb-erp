@@ -22,7 +22,6 @@ const TestAuth = () => {
   return (
     <>
       <button onClick={handleClick}>Click</button>
-      <button onClick={handleClickLogout}>Logout</button>
     </>
   );
 };

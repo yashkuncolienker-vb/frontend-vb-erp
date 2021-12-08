@@ -97,7 +97,7 @@ const AddUserForm = () => {
             message: "Successfully Registered User",
           })
         );
-        navigate("/users/login");
+        navigate("/login");
       } catch (e) {
         console.log(e);
         dispatch(

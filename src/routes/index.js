@@ -15,7 +15,7 @@ const routes = [
     title: "Templates",
   },
   {
-    path: "/users/login",
+    path: "/login",
     component: Login,
     title: "Login",
   },

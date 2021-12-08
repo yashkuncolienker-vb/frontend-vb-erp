@@ -3,7 +3,7 @@ import * as yup from "yup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Grid, Typography } from "@mui/material";
-import axios from "axios";
+import axios from "../../helpers/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { uiActions } from "../../store/ui-slice";
@@ -42,11 +42,7 @@ const LoginForm = () => {
         credentials: "same-origin",
       };
       try {
-        await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}users/login`,
-          values,
-          config
-        );
+        await axios.post("users/login", values, config);
         dispatch(userActions.handleLoginBool({ loginBool: true }));
         dispatch(
           uiActions.showNotification({

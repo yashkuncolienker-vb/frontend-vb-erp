@@ -74,6 +74,7 @@ const Header = () => {
           message: "Logged Out Successfully",
         })
       );
+      navigate("/login");
     } catch (e) {
       dispatch(
         uiActions.showNotification({
@@ -86,7 +87,7 @@ const Header = () => {
   const handleClickLogin = async () => {
     setAnchorEl(null);
     try {
-      navigate("/users/login");
+      navigate("/login");
     } catch (e) {
       dispatch(
         uiActions.showNotification({
@@ -126,14 +127,14 @@ const Header = () => {
             transformOrigin={{ horizontal: "center", vertical: "top" }}
             anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
           >
-            {Cookies.get("Token") && (
+            {/* {Cookies.get("Token") && (
               <div>
                 <MenuItem onClick={handleClose}>
                   <Avatar /> Profile
                 </MenuItem>
                 <Divider />
               </div>
-            )}
+            )} */}
 
             <MenuItem onClick={handleClose}>
               <ListItemIcon>

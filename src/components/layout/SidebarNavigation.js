@@ -23,7 +23,7 @@ import axios from "../../helpers/axiosInstance";
 import { useDispatch } from "react-redux";
 import uiActions from "../../store/ui-slice";
 import { Typography } from "@mui/material";
-import { userSlice } from "../../store/user-slice";
+import { userActions } from "../../store/user-slice";
 const customStyling = {
   boxStyles: {
     position: "fixed",
@@ -87,38 +87,27 @@ const CustomListItemButton = styled(ListItemButton)(({ theme }) => ({
 }));
 
 const SidebarNavigation = () => {
-  //
   const dispatch = useDispatch();
-  const loginState = useSelector((state) => state.user.loginBool);
+  const userState = useSelector((state) => state.user);
   const [usrData, setUsrData] = useState(null);
-  //
-  const [openTasks, setOpenTasks] = useState(false);
-  const [openPMO, setOpenPMO] = useState(false);
-  const [openCMS, setOpenCMS] = useState(false);
-  const [openRR, setOpenRR] = useState(false);
-  const [openHamburger, setOpenHamburger] = useState(false);
-  const [bool, setBool] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     if (!matches) {
-      setBool(false);
-      setOpenHamburger(true);
+      dispatch(userActions.handleBool({ bool: false }));
+      dispatch(userActions.handleHamburger());
     } else {
-      setBool(true);
-      setOpenHamburger(false);
+      dispatch(userActions.handleBool({ bool: true }));
+      dispatch(userActions.handleHamburger());
     }
-  }, [matches]);
+  }, [matches, dispatch]);
 
   useEffect(() => {
     (async () => {
-      if (loginState) {
+      if (userState.loginBool) {
         try {
-          const userData = await axios.get(
-            `${process.env.REACT_APP_API_BASE_URL}users`
-          );
+          const userData = await axios.get("users");
           setUsrData(userData);
         } catch (e) {
           dispatch(
@@ -133,26 +122,15 @@ const SidebarNavigation = () => {
         setUsrData(null);
       }
     })();
-  }, [loginState]);
-  //
+  }, [userState.loginBool, dispatch]);
+
   const handleHamburger = (index) => {
-    setOpenHamburger(!openHamburger);
+    dispatch(userActions.handleHamburger());
   };
   const handleListItemClick = (index) => {
-    setSelectedIndex(index);
+    dispatch(userActions.handleListItemClick({ index }));
   };
-  const handleClickTasks = (event) => {
-    setOpenTasks(!openTasks);
-  };
-  const handleClickPMO = (event) => {
-    setOpenPMO(!openPMO);
-  };
-  const handleClickCMS = (event) => {
-    setOpenCMS(!openCMS);
-  };
-  const handleClickRR = (event) => {
-    setOpenRR(!openRR);
-  };
+
   const sideMenu = [
     {
       name: "My Profile",
@@ -160,8 +138,10 @@ const SidebarNavigation = () => {
     {
       name: "Tasks",
       dropDown: ["Create Profile", "Reviews"],
-      open: openTasks,
-      handle: handleClickTasks,
+      open: userState.openTasks,
+      handle: () => {
+        dispatch(userActions.handleClickTasks());
+      },
     },
     {
       name: "Network",
@@ -172,8 +152,10 @@ const SidebarNavigation = () => {
     {
       name: "PMO",
       dropDown: ["Projects", "Create Project", "Allocations"],
-      open: openPMO,
-      handle: handleClickPMO,
+      open: userState.openPMO,
+      handle: () => {
+        dispatch(userActions.handleClickPMO());
+      },
     },
     {
       name: "CIMS",
@@ -181,14 +163,18 @@ const SidebarNavigation = () => {
     {
       name: "CMS",
       dropDown: ["PO/SOW", "Invoicing"],
-      open: openCMS,
-      handle: handleClickCMS,
+      open: userState.openCMS,
+      handle: () => {
+        dispatch(userActions.handleClickCMS());
+      },
     },
     {
       name: "R&R",
       dropDown: ["Catalog", "Reward"],
-      open: openRR,
-      handle: handleClickRR,
+      open: userState.openRR,
+      handle: () => {
+        dispatch(userActions.handleClickRR());
+      },
     },
   ];
   return (
@@ -224,19 +210,19 @@ const SidebarNavigation = () => {
           }
           component="nav"
         >
-          {bool && (
+          {userState.bool && (
             <CustomListItemButton onClick={handleHamburger}>
               <ListItemIcon>
                 <MenuIcon />
               </ListItemIcon>
               <ListItemText primary="MENU" />
-              {openHamburger ? <ExpandLess /> : <ExpandMore />}
+              {userState.openHamburger ? <ExpandLess /> : <ExpandMore />}
             </CustomListItemButton>
           )}
 
           <Collapse
             sx={matches ? { ...customStyling.collapseStyleResponsive } : {}}
-            in={openHamburger}
+            in={userState.openHamburger}
             timeout="auto"
             unmountOnExit
           >
@@ -244,13 +230,10 @@ const SidebarNavigation = () => {
               <Grid paddingY="20px" container justifyContent="center">
                 <Avatar style={{ width: "80px", height: "80px" }} />
               </Grid>
-              {loginState && usrData && (
+              {userState.loginBool && usrData && (
                 <Grid container direction="column" alignItems="center">
                   <Grid item xs={12}>
                     <Typography>
-                      {console.log(loginState)}
-                      {console.log(usrData)}
-
                       {`Hello! ${usrData.data.data.first_name} ${usrData.data.data.last_name}`}
                     </Typography>
                   </Grid>
@@ -264,7 +247,7 @@ const SidebarNavigation = () => {
                   return (
                     <CustomListItemButton
                       key={i}
-                      selected={selectedIndex === i}
+                      selected={userState.selectedIndex === i}
                       onClick={() => handleListItemClick(i)}
                     >
                       <ListItemIcon>
@@ -281,7 +264,7 @@ const SidebarNavigation = () => {
                           menuItem.handle();
                           handleListItemClick(i);
                         }}
-                        selected={selectedIndex === i}
+                        selected={userState.selectedIndex === i}
                       >
                         <ListItemIcon>
                           <DonutLargeIcon style={{ color: "black" }} />

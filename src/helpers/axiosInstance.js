@@ -30,7 +30,7 @@ axiosInstance.interceptors.response.use(
     }
 
     if (error.response.status === 401) {
-      window.location = "/login";
+      // window.location = "/login";
     } else {
       return new Promise((resolve, reject) => {
         reject(error);
